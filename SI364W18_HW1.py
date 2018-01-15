@@ -5,8 +5,7 @@
 #################################
 
 ## List below here, in a comment/comments, the people you worked with on this assignment AND any resources you used to find code (50 point deduction for not doing so). If none, write "None".
-
-
+#I worked with Kayla Williams
 
 ## [PROBLEM 1] - 150 points
 ## Below is code for one of the simplest possible Flask applications. Edit the code so that once you run this application locally and go to the URL 'http://localhost:5000/class', you see a page that says "Welcome to SI 364!"
@@ -87,18 +86,25 @@ def page():
 # You can assume that a user will give you the type of input/response you expect in your form; you do not need to handle errors or user confusion. (e.g. if your form asks for a name, you can assume a user will type a reasonable name; if your form asks for a number, you can assume a user will type a reasonable number; if your form asks the user to select a checkbox, you can assume they will do that.)
 
 # Points will be assigned for each specification in the problem.
-@app.route('/problem4form/<tvshow>')
+@app.route('/problem4form/',methods=['POST','GET'])
 
 def form1():
-	url= 'https://itunes.apple.com/search?term={}&country=US&entity=tvShow'.format(tvshow)
-	formstring1= """ <form action="http://localhost:5000/results" method='GET'>
-  <input type="checkbox" name="show1" value="comedy"> Comedy<br>
-  <input type="checkbox" name="show2" value="drama"> Drama<br>
-  <input type="submit" value="Submit">
-</form>"""
-@app.route('/results', methods=['GET'])
-def form():
-	if 
-	return 
+	if request.method=='POST':
+		url='https://itunes.apple.com/search?term={}&country=US&entity=tvEpisode'.format(request.form['show'])
+		r= requests.get(url).json()
+		fstring="""
+		<p> Search Result: <br>
+		Show Title: {0} <br>
+		Episode Title: {1}
+		""".format(r['results'][0]['artistName'],r['results'][0]['trackName'])
+		if ('Problem4' in request.form):
+			fstring += '<p>Comedy</p>'
+		return fstring
+	return '''<form action = '/problem4form/' method= 'POST'>
+		<p>Enter a TV Show</p>
+		<input type='text' name='show'><br>
+		Check box if this is a comedy <input type= 'checkbox' name='Problem4'><br>
+		<input type='submit' value= 'Submit'>
+		</form>'''
 if __name__ == '__main__':
     app.run()
